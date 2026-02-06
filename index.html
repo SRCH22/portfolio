@@ -945,7 +945,7 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.4s ease;
-            touch-action: pan-y pinch-zoom;
+            touch-action: none;
         }
         
         .modal-overlay.active {
@@ -958,9 +958,10 @@
             max-width: 90vw;
             max-height: 90vh;
             transform: scale(0.9) translateY(20px);
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             touch-action: none;
             user-select: none;
+            will-change: transform;
         }
         
         .modal-overlay.active .modal-content {
@@ -974,6 +975,7 @@
             box-shadow: 0 40px 80px rgba(0,0,0,0.6);
             touch-action: none;
             -webkit-user-drag: none;
+            pointer-events: none;
         }
         
         .modal-close {
@@ -1113,7 +1115,7 @@
                 gap: 24px;
             }
             .stat-item:not(:last-child)::after {
-                display: none;
+                display: display: none;
             }
             .bg-shape {
                 opacity: 0.2;
@@ -1150,7 +1152,6 @@
             animation: fadeInUp 0.8s ease forwards;
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div id="root"></div>
@@ -1315,8 +1316,10 @@
             const [isDragging, setIsDragging] = useState(false);
             const [startX, setStartX] = useState(0);
             const [translateX, setTranslateX] = useState(0);
+            const [isAnimating, setIsAnimating] = useState(false);
             const itemRefs = useRef([]);
             const contentRef = useRef(null);
+            const animationRef = useRef(null);
             
             const filteredItems = filter === 'all' 
                 ? portfolioData 
@@ -1345,80 +1348,107 @@
                 setCurrentIndex(index);
                 setModalOpen(true);
                 document.body.style.overflow = 'hidden';
+                setTranslateX(0);
             };
             
             const closeModal = () => {
                 setModalOpen(false);
                 document.body.style.overflow = 'auto';
                 setTranslateX(0);
+                setIsDragging(false);
             };
             
             const navigateModal = useCallback((direction) => {
+                if (isAnimating) return;
+                
                 const newIndex = currentIndex + direction;
+                let targetIndex;
+                
                 if (newIndex >= 0 && newIndex < filteredItems.length) {
-                    setCurrentIndex(newIndex);
+                    targetIndex = newIndex;
                 } else if (newIndex < 0) {
-                    setCurrentIndex(filteredItems.length - 1);
+                    targetIndex = filteredItems.length - 1;
                 } else {
-                    setCurrentIndex(0);
+                    targetIndex = 0;
                 }
-                setTranslateX(0);
-            }, [currentIndex, filteredItems.length]);
+                
+                setIsAnimating(true);
+                setCurrentIndex(targetIndex);
+                
+                // Плавный сброс позиции после переключения
+                setTimeout(() => {
+                    setTranslateX(0);
+                    setIsAnimating(false);
+                }, 300);
+            }, [currentIndex, filteredItems.length, isAnimating]);
             
-            // Улучшенная обработка свайпа с инерцией
+            // Плавная анимация возврата
+            const animateReset = () => {
+                if (animationRef.current) cancelAnimationFrame(animationRef.current);
+                
+                const start = translateX;
+                const duration = 300;
+                const startTime = performance.now();
+                
+                const animate = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing function (ease-out-cubic)
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    const current = start * (1 - easeOut);
+                    
+                    setTranslateX(current);
+                    
+                    if (progress < 1) {
+                        animationRef.current = requestAnimationFrame(animate);
+                    }
+                };
+                
+                animationRef.current = requestAnimationFrame(animate);
+            };
+            
             const handleTouchStart = (e) => {
+                if (isAnimating) return;
                 setIsDragging(true);
                 setStartX(e.touches[0].clientX);
-                setTranslateX(0);
+                if (animationRef.current) cancelAnimationFrame(animationRef.current);
             };
             
             const handleTouchMove = (e) => {
-                if (!isDragging) return;
+                if (!isDragging || isAnimating) return;
+                
                 const currentX = e.touches[0].clientX;
                 const diff = currentX - startX;
-                setTranslateX(diff);
+                
+                // Резиновый эффект при достижении границ
+                const isFirst = currentIndex === 0;
+                const isLast = currentIndex === filteredItems.length - 1;
+                
+                let resistance = 1;
+                if ((isFirst && diff > 0) || (isLast && diff < 0)) {
+                    resistance = 0.3; // Сопротивление на границах
+                }
+                
+                setTranslateX(diff * resistance);
             };
             
             const handleTouchEnd = () => {
                 if (!isDragging) return;
                 setIsDragging(false);
                 
-                const threshold = 80; // минимальное расстояние для свайпа
+                const threshold = 80;
                 const velocity = Math.abs(translateX);
                 
                 if (velocity > threshold) {
                     if (translateX > 0) {
-                        navigateModal(-1); // свайп вправо - предыдущее
+                        navigateModal(-1);
                     } else {
-                        navigateModal(1); // свайп влево - следующее
+                        navigateModal(1);
                     }
                 } else {
-                    // Возврат к центру если свайп недостаточный
-                    setTranslateX(0);
+                    animateReset();
                 }
-            };
-            
-            // Обработка мыши для десктопа (для консистентности)
-            const handleMouseDown = (e) => {
-                if (window.innerWidth > 768) return; // только для мобильных
-                setIsDragging(true);
-                setStartX(e.clientX);
-                setTranslateX(0);
-            };
-            
-            const handleMouseMove = (e) => {
-                if (!isDragging) return;
-                const currentX = e.clientX;
-                const diff = currentX - startX;
-                setTranslateX(diff);
-            };
-            
-            const handleMouseUp = () => {
-                handleTouchEnd();
-            };
-            
-            const handleMouseLeave = () => {
-                if (isDragging) handleTouchEnd();
             };
             
             useEffect(() => {
@@ -1440,12 +1470,16 @@
                 other: 'Другое'
             };
             
-            // Динамические стили для трансформации при свайпе
+            // Динамические стили с плавной интерполяцией
             const getTransformStyle = () => {
-                if (!isDragging) return { transform: 'translateX(0) scale(1)' };
-                return { 
-                    transform: `translateX(${translateX * 0.5}px) scale(${1 - Math.abs(translateX) * 0.0005})`,
-                    transition: 'none'
+                const baseScale = isDragging ? 0.95 : 1;
+                const scale = baseScale - Math.abs(translateX) * 0.0002;
+                const opacity = 1 - Math.abs(translateX) * 0.001;
+                
+                return {
+                    transform: `translateX(${translateX}px) scale(${Math.max(scale, 0.8)})`,
+                    opacity: Math.max(opacity, 0.5),
+                    transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease'
                 };
             };
             
@@ -1503,10 +1537,6 @@
                                 onTouchStart={handleTouchStart}
                                 onTouchMove={handleTouchMove}
                                 onTouchEnd={handleTouchEnd}
-                                onMouseDown={handleMouseDown}
-                                onMouseMove={handleMouseMove}
-                                onMouseUp={handleMouseUp}
-                                onMouseLeave={handleMouseLeave}
                                 style={getTransformStyle()}
                             >
                                 <button className="modal-close" onClick={closeModal}>×</button>
@@ -1517,10 +1547,6 @@
                                     alt={filteredItems[currentIndex].title}
                                     className="modal-image"
                                     draggable="false"
-                                    style={{ 
-                                        pointerEvents: 'none',
-                                        userSelect: 'none'
-                                    }}
                                 />
                                 <div className="modal-counter">{currentIndex + 1} / {filteredItems.length}</div>
                                 <div className="swipe-hint">← Свайпайте →</div>
