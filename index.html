@@ -6,35 +6,42 @@
     <title>Наталья Сарычева — Графический дизайнер</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         :root {
-            --bg: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-card: #1a1a1a;
-            --text: #ffffff;
-            --text-secondary: #888888;
-            --text-muted: #555555;
-            --accent: #ff6b6b;
-            --accent-2: #4ecdc4;
-            --accent-3: #ffe66d;
-            --border: #222222;
+            /* Новая изысканная палитра */
+            --bg: #0c0c0e;
+            --bg-secondary: #121214;
+            --bg-card: #18181b;
+            --bg-elevated: #1f1f23;
+            --text: #fafaf9;
+            --text-secondary: #a1a1aa;
+            --text-muted: #52525b;
+            --accent: #f59e0b;
+            --accent-secondary: #ec4899;
+            --accent-tertiary: #06b6d4;
+            --border: #27272a;
+            --gradient-1: linear-gradient(135deg, #f59e0b 0%, #ec4899 50%, #06b6d4 100%);
+            --gradient-2: linear-gradient(90deg, rgba(245,158,11,0.1) 0%, rgba(236,72,153,0.1) 100%);
         }
         
         [data-theme="light"] {
-            --bg: #fafafa;
-            --bg-secondary: #ffffff;
-            --bg-card: #f5f5f5;
-            --text: #111111;
-            --text-secondary: #666666;
-            --text-muted: #999999;
-            --accent: #e74c3c;
-            --accent-2: #1abc9c;
-            --accent-3: #f39c12;
-            --border: #e0e0e0;
+            --bg: #fafaf9;
+            --bg-secondary: #f5f5f4;
+            --bg-card: #e7e5e4;
+            --bg-elevated: #d6d3d1;
+            --text: #1c1917;
+            --text-secondary: #57534e;
+            --text-muted: #a8a29e;
+            --accent: #d97706;
+            --accent-secondary: #db2777;
+            --accent-tertiary: #0891b2;
+            --border: #d6d3d1;
+            --gradient-1: linear-gradient(135deg, #d97706 0%, #db2777 50%, #0891b2 100%);
+            --gradient-2: linear-gradient(90deg, rgba(217,119,6,0.1) 0%, rgba(219,39,119,0.1) 100%);
         }
         
         * {
@@ -53,32 +60,10 @@
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.5s ease, color 0.5s ease;
         }
         
-        /* Custom Cursor */
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease, background 0.2s ease;
-            mix-blend-mode: difference;
-        }
-        
-        .cursor.hover {
-            transform: scale(2);
-            background: var(--accent);
-        }
-        
-        @media (pointer: coarse) {
-            .cursor { display: none; }
-        }
-        
-        /* Noise Overlay */
+        /* Элегантный шум с меньшей интенсивностью */
         .noise {
             position: fixed;
             top: 0;
@@ -87,49 +72,106 @@
             height: 100%;
             pointer-events: none;
             z-index: 1000;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.015;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
         
-        /* Navigation */
+        /* Органические фоновые формы */
+        .bg-shapes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .bg-shape-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
+        }
+        
+        .bg-shape-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-secondary);
+            bottom: 10%;
+            left: -100px;
+            animation-delay: -5s;
+        }
+        
+        .bg-shape-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-tertiary);
+            top: 40%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        /* Навигация с эффектом стекла */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            padding: 20px 40px;
+            padding: 24px 48px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: transparent;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
         
         nav.scrolled {
-            background: rgba(var(--bg), 0.9);
-            backdrop-filter: blur(20px);
-            padding: 15px 40px;
+            background: rgba(12, 12, 14, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 16px 48px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        [data-theme="light"] nav.scrolled {
+            background: rgba(250, 250, 249, 0.8);
         }
         
         .nav-logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-style: italic;
             color: var(--text);
             text-decoration: none;
             position: relative;
+            letter-spacing: -0.02em;
         }
         
         .nav-logo::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -4px;
             left: 0;
             width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
+            height: 1px;
+            background: var(--gradient-1);
+            transition: width 0.4s ease;
         }
         
         .nav-logo:hover::after {
@@ -138,7 +180,7 @@
         
         .nav-links {
             display: flex;
-            gap: 40px;
+            gap: 48px;
             align-items: center;
         }
         
@@ -146,35 +188,38 @@
             color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 400;
             transition: color 0.3s ease;
             position: relative;
+            letter-spacing: 0.02em;
         }
         
         .nav-link:hover {
             color: var(--text);
         }
         
-        .nav-link::after {
+        .nav-link::before {
             content: '';
             position: absolute;
             bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
+            left: 50%;
+            width: 4px;
+            height: 4px;
             background: var(--accent);
-            transition: width 0.3s ease;
+            border-radius: 50%;
+            transform: translateX(-50%) scale(0);
+            transition: transform 0.3s ease;
         }
         
-        .nav-link:hover::after {
-            width: 100%;
+        .nav-link:hover::before {
+            transform: translateX(-50%) scale(1);
         }
         
         .theme-btn {
-            background: none;
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
             color: var(--text-secondary);
             cursor: pointer;
             font-size: 0.85rem;
@@ -182,11 +227,14 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            font-weight: 500;
         }
         
         .theme-btn:hover {
             border-color: var(--accent);
             color: var(--text);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
         }
         
         .mobile-menu-btn {
@@ -198,33 +246,46 @@
             cursor: pointer;
         }
         
-        /* Hero Section */
+        /* Hero с асимметричной композицией */
         .hero {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 120px 40px 80px;
+            padding: 140px 48px 100px;
             position: relative;
+            z-index: 1;
         }
         
         .hero-badge-link {
             text-decoration: none;
-            display: inline-block;
-            margin-bottom: 30px;
+            display: inline-flex;
+            margin-bottom: 40px;
+            align-self: flex-start;
         }
         
         .hero-badge {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
+            gap: 12px;
+            padding: 12px 24px;
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 50px;
             font-size: 0.85rem;
             color: var(--text-secondary);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-badge::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .hero-badge:hover {
@@ -233,127 +294,210 @@
             transform: translateY(-2px);
         }
         
+        .hero-badge:hover::before {
+            opacity: 1;
+        }
+        
+        .hero-badge > * {
+            position: relative;
+            z-index: 1;
+        }
+        
         .hero-badge-dot {
             width: 8px;
             height: 8px;
-            background: #00d26a;
+            background: #22c55e;
             border-radius: 50%;
             animation: pulse 2s infinite;
+            box-shadow: 0 0 10px #22c55e;
         }
         
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.8); }
         }
         
         .hero-content {
-            max-width: 900px;
+            max-width: 1000px;
+            position: relative;
         }
         
         .hero-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 24px;
             color: var(--text);
+            letter-spacing: -0.03em;
         }
         
-        .hero-title span {
-            color: var(--accent);
+        .hero-title .ampersand {
+            font-style: italic;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .hero-subtitle {
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-style: italic;
             color: var(--text-secondary);
-            margin-bottom: 30px;
-            max-width: 600px;
+            margin-bottom: 32px;
+            font-weight: 400;
         }
         
         .hero-text {
             font-size: 1.1rem;
             color: var(--text-muted);
-            max-width: 550px;
-            margin-bottom: 40px;
+            max-width: 500px;
+            margin-bottom: 48px;
             line-height: 1.8;
+            font-weight: 300;
         }
         
         .hero-cta {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 16px 32px;
-            background: var(--text);
-            color: var(--bg);
+            gap: 12px;
+            padding: 18px 36px;
+            background: transparent;
+            color: var(--text);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 0.95rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
         
         .hero-cta:hover {
+            border-color: transparent;
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 40px rgba(245, 158, 11, 0.3);
+        }
+        
+        .hero-cta:hover::before {
+            opacity: 1;
+        }
+        
+        .hero-cta span {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        
+        .hero-cta:hover span {
+            transform: translateX(4px);
         }
         
         .scroll-hint {
             position: absolute;
             bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 48px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: var(--text-muted);
-            font-size: 0.8rem;
-            animation: bounce 2s infinite;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
         
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollLine 2s infinite;
         }
         
-        /* Section Styles */
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            50.1% { transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+        
+        /* Секции с улучшенной типографикой */
         section {
-            padding: 100px 40px;
+            padding: 120px 48px;
+            position: relative;
+            z-index: 1;
         }
         
         .section-header {
-            margin-bottom: 60px;
+            margin-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
         
         .section-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--text-muted);
-            margin-bottom: 15px;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-label::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+            opacity: 0.5;
         }
         
         .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
             color: var(--text);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
         
-        /* Portfolio Section */
+        /* Портфолио с masonry-эффектом */
         .portfolio {
             background: var(--bg-secondary);
+            position: relative;
+        }
+        
+        .portfolio::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
         }
         
         .portfolio-filters {
             display: flex;
-            gap: 15px;
-            margin-bottom: 50px;
+            gap: 12px;
+            margin-bottom: 60px;
             flex-wrap: wrap;
         }
         
         .filter-btn {
-            padding: 10px 24px;
+            padding: 12px 28px;
             background: transparent;
             border: 1px solid var(--border);
             border-radius: 30px;
@@ -361,6 +505,7 @@
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: 400;
         }
         
         .filter-btn:hover,
@@ -368,23 +513,24 @@
             background: var(--text);
             color: var(--bg);
             border-color: var(--text);
+            transform: translateY(-2px);
         }
         
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
         
         .portfolio-item {
             background: var(--bg-card);
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid var(--border);
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(40px);
         }
         
         .portfolio-item.visible {
@@ -393,9 +539,14 @@
         }
         
         .portfolio-item:hover {
-            transform: translateY(-10px);
+            transform: translateY(-8px) scale(1.02);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        }
+        
+        .portfolio-item.featured {
+            grid-column: span 2;
+            grid-row: span 2;
         }
         
         .portfolio-img-wrapper {
@@ -404,11 +555,15 @@
             overflow: hidden;
         }
         
+        .portfolio-item.featured .portfolio-img-wrapper {
+            aspect-ratio: 1/1;
+        }
+        
         .portfolio-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.7s ease;
         }
         
         .portfolio-item:hover .portfolio-img {
@@ -418,12 +573,12 @@
         .portfolio-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.9) 100%);
+            background: linear-gradient(180deg, transparent 30%, rgba(12,12,14,0.95) 100%);
             display: flex;
             align-items: flex-end;
-            padding: 20px;
+            padding: 30px;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
         
         .portfolio-item:hover .portfolio-overlay {
@@ -431,14 +586,14 @@
         }
         
         .portfolio-view-btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             background: var(--text);
             color: var(--bg);
-            border-radius: 6px;
+            border-radius: 30px;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 500;
             transform: translateY(20px);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
         
         .portfolio-item:hover .portfolio-view-btn {
@@ -446,133 +601,214 @@
         }
         
         .portfolio-info {
-            padding: 25px;
+            padding: 28px;
         }
         
         .portfolio-category {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.15em;
             color: var(--accent);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
         
         .portfolio-title {
-            font-size: 1.2rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
             font-weight: 600;
             color: var(--text);
             margin-bottom: 8px;
+            line-height: 1.3;
         }
         
         .portfolio-desc {
             font-size: 0.9rem;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.6;
         }
         
-        /* About Section */
+        /* Обо мне с асимметрией */
         .about-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 100px;
             align-items: center;
         }
         
         .about-text {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--text-secondary);
             line-height: 1.9;
         }
         
         .about-text p {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .about-text p:first-child::first-letter {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4rem;
+            float: left;
+            line-height: 0.8;
+            margin-right: 16px;
+            margin-top: 8px;
+            color: var(--accent);
+            font-weight: 600;
         }
         
         .about-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin: 40px 0;
+            gap: 40px;
+            margin: 50px 0;
+            padding: 30px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
         }
         
         .stat-item {
             text-align: center;
+            position: relative;
+        }
+        
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 40px;
+            background: var(--border);
         }
         
         .stat-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--accent);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: block;
+            line-height: 1;
+            margin-bottom: 8px;
         }
         
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.1em;
         }
         
         .skills {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 30px;
+            gap: 12px;
+            margin-top: 40px;
         }
         
         .skill-tag {
-            padding: 8px 16px;
+            padding: 10px 20px;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 30px;
             font-size: 0.85rem;
             color: var(--text-secondary);
             transition: all 0.3s ease;
         }
         
         .skill-tag:hover {
-            border-color: var(--accent);
+            border-color: var(--accent-secondary);
             color: var(--text);
+            transform: translateY(-2px);
         }
         
         .about-image {
             position: relative;
         }
         
-        .about-image img {
-            width: 100%;
-            border-radius: 16px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+        .about-image::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border: 1px solid var(--accent);
+            border-radius: 24px;
+            opacity: 0.3;
+            z-index: -1;
         }
         
-        /* Contact Section */
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+            transition: transform 0.5s ease;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.02);
+        }
+        
+        /* Контакты с карточками-стеклами */
         .contact {
             background: var(--bg-secondary);
+            position: relative;
+        }
+        
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
         }
         
         .contact-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
         }
         
         .contact-card {
-            padding: 35px;
+            padding: 40px;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             text-decoration: none;
             color: var(--text);
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        
+        .contact-card:hover::before {
+            transform: scaleX(1);
         }
         
         .contact-card:hover {
-            border-color: var(--accent);
+            border-color: var(--bg-elevated);
             transform: translateY(-5px);
+            background: var(--bg-elevated);
         }
         
         .contact-card.no-link {
@@ -581,61 +817,76 @@
         
         .contact-card.no-link:hover {
             transform: none;
-            border-color: var(--border);
+            background: var(--bg-card);
+        }
+        
+        .contact-card.no-link::before {
+            display: none;
         }
         
         .contact-icon {
-            width: 50px;
-            height: 50px;
+            width: 56px;
+            height: 56px;
             background: var(--bg);
-            border-radius: 12px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-card:hover .contact-icon {
+            transform: scale(1.1);
         }
         
         .contact-title {
-            font-size: 1.1rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
             font-weight: 600;
         }
         
         .contact-value {
             font-size: 0.95rem;
             color: var(--text-secondary);
+            line-height: 1.6;
         }
         
-        /* Footer */
+        /* Футер минималистичный */
         footer {
-            padding: 60px 40px;
+            padding: 80px 48px;
             text-align: center;
             border-top: 1px solid var(--border);
+            position: relative;
         }
         
         .footer-text {
             font-size: 0.9rem;
             color: var(--text-muted);
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
         }
         
         .footer-text span {
             color: var(--text);
             font-weight: 600;
+            font-style: normal;
         }
         
-        /* Modal */
+        /* Модальное окно улучшенное */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(12,12,14,0.98);
+            backdrop-filter: blur(20px);
             z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
         
         .modal-overlay.active {
@@ -647,52 +898,54 @@
             position: relative;
             max-width: 90vw;
             max-height: 90vh;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s ease;
         }
         
         .modal-overlay.active .modal-content {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
         
         .modal-image {
             max-width: 100%;
-            max-height: 80vh;
-            border-radius: 12px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            max-height: 85vh;
+            border-radius: 16px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
         }
         
         .modal-close {
             position: absolute;
-            top: -50px;
+            top: -60px;
             right: 0;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.5rem;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         .modal-close:hover {
-            background: rgba(255,255,255,0.1);
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: rotate(90deg);
         }
         
         .modal-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            width: 50px;
-            height: 50px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             cursor: pointer;
             font-size: 1.5rem;
@@ -703,80 +956,98 @@
         }
         
         .modal-nav:hover {
-            background: rgba(255,255,255,0.2);
+            background: var(--text);
+            color: var(--bg);
+            transform: translateY(-50%) scale(1.1);
         }
         
-        .modal-nav.prev { left: -70px; }
-        .modal-nav.next { right: -70px; }
+        .modal-nav.prev { left: -100px; }
+        .modal-nav.next { right: -100px; }
         
         .modal-counter {
             position: absolute;
-            bottom: -40px;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255,255,255,0.6);
+            color: var(--text-secondary);
             font-size: 0.9rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
         }
         
-        /* Responsive */
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .portfolio-item.featured {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+            .portfolio-item.featured .portfolio-img-wrapper {
+                aspect-ratio: 4/3;
+            }
+        }
+        
         @media (max-width: 992px) {
             .about-content {
                 grid-template-columns: 1fr;
-                gap: 50px;
+                gap: 60px;
             }
-            
             .about-image {
                 order: -1;
+                max-width: 500px;
+                margin: 0 auto;
             }
-            
-            .portfolio-grid {
+            .contact-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
         
         @media (max-width: 768px) {
             nav {
-                padding: 15px 20px;
+                padding: 20px 24px;
             }
-            
             .nav-links {
                 display: none;
             }
-            
             .mobile-menu-btn {
                 display: block;
             }
-            
             .hero {
-                padding: 100px 20px 60px;
+                padding: 120px 24px 80px;
             }
-            
             section {
-                padding: 60px 20px;
+                padding: 80px 24px;
             }
-            
             .portfolio-grid {
                 grid-template-columns: 1fr;
             }
-            
+            .portfolio-item.featured {
+                grid-column: span 1;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
             .about-stats {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 15px;
+                grid-template-columns: 1fr;
+                gap: 24px;
             }
-            
-            .stat-number {
-                font-size: 1.8rem;
+            .stat-item:not(:last-child)::after {
+                display: none;
             }
-            
-            .modal-nav.prev { left: 10px; }
-            .modal-nav.next { right: 10px; }
+            .modal-nav.prev { left: 20px; }
+            .modal-nav.next { right: 20px; }
+            .bg-shape {
+                opacity: 0.2;
+            }
         }
         
-        /* Animations */
+        /* Анимации */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -785,10 +1056,16 @@
         }
         
         .animate-in {
-            animation: fadeInUp 0.6s ease forwards;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        /* Кастомный курсор только для десктопа */
+        @media (pointer: fine) {
+            .cursor {
+                display: none;
+            }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div id="root"></div>
@@ -796,66 +1073,44 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
         
-        // Portfolio data
+        // Данные портфолио с featured-элементами
         const portfolioData = [
-            { id: 1, category: 'avito', title: 'Превью на Avito', desc: 'Креативные обложки для объявлений', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio4.jpg' },
+            { id: 1, category: 'avito', title: 'Превью на Avito', desc: 'Креативные обложки для объявлений', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio4.jpg', featured: true },
             { id: 2, category: 'avito', title: 'Превью на Avito', desc: 'Привлекательные превью-изображения', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio5.jpg' },
             { id: 3, category: 'avito', title: 'Карточки на Avito', desc: 'Бытовая техника и электроника', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio6.jpg' },
             { id: 4, category: 'avito', title: 'Карточки на Avito', desc: 'Товары с высокой конверсией', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio7.jpg' },
             { id: 5, category: 'avito', title: 'Карточки на Avito', desc: 'Визуализация одежды', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio8.jpg' },
             { id: 6, category: 'avito', title: 'Карточки на Avito', desc: 'Строительные материалы', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio17.jpg' },
-            { id: 7, category: 'aliexpress', title: 'Карточки на AliExpress', desc: 'Международная площадка', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio11.jpg' },
+            { id: 7, category: 'aliexpress', title: 'Карточки на AliExpress', desc: 'Международная площадка', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio11.jpg', featured: true },
             { id: 8, category: 'aliexpress', title: 'Карточки на AliExpress', desc: 'Спортивные товары', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio12.jpg' },
             { id: 9, category: 'aliexpress', title: 'Карточки на AliExpress', desc: 'Категория электроники', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio13.jpg' },
             { id: 10, category: 'aliexpress', title: 'Карточки на AliExpress', desc: 'Красота и здоровье', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio14.jpg' },
             { id: 11, category: 'aliexpress', title: 'Карточки на AliExpress', desc: 'Товары домашнего обихода', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio15.jpg' },
             { id: 12, category: 'aliexpress', title: 'Карточки на AliExpress', desc: 'Аксессуары и гаджеты', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio16.jpg' },
             { id: 13, category: 'ozon', title: 'Карточки на Ozon', desc: 'Продукты питания', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio18.jpg' },
-            { id: 14, category: 'ozon', title: 'Карточки на Ozon', desc: 'Косметическая продукция', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio19.jpg' },
+            { id: 14, category: 'ozon', title: 'Карточки на Ozon', desc: 'Косметическая продукция', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio19.jpg', featured: true },
             { id: 15, category: 'ozon', title: 'Карточки на Ozon', desc: 'Книги и канцелярия', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio20.jpg' },
             { id: 16, category: 'ozon', title: 'Карточки на Ozon', desc: 'Детская категория', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio21.jpg' },
             { id: 17, category: 'other', title: 'Макеты для авто', desc: 'Автомобильная реклама', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio1.jpg' },
             { id: 18, category: 'other', title: 'Пленка на авто', desc: 'Виниловые покрытия', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio2.jpg' },
             { id: 19, category: 'other', title: 'Эскизы для баннера', desc: 'Рекламные баннеры', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio3.jpg' },
-            { id: 20, category: 'other', title: 'Фирменный стиль', desc: 'Комплексный брендинг', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio9.jpg' },
+            { id: 20, category: 'other', title: 'Фирменный стиль', desc: 'Комплексный брендинг', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio9.jpg', featured: true },
             { id: 21, category: 'other', title: 'Разработка логотипа', desc: 'Логотип для стартапа', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio10.jpg' },
             { id: 22, category: 'other', title: 'Типографика', desc: 'Инструкции и мануалы', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio22.jpg' },
         ];
         
-        // Custom Cursor Component
-        function CustomCursor() {
-            const cursorRef = useRef(null);
-            
-            useEffect(() => {
-                const cursor = cursorRef.current;
-                if (!cursor || window.matchMedia('(pointer: coarse)').matches) return;
-                
-                const moveCursor = (e) => {
-                    cursor.style.left = e.clientX + 'px';
-                    cursor.style.top = e.clientY + 'px';
-                };
-                
-                const handleMouseEnter = () => cursor.classList.add('hover');
-                const handleMouseLeave = () => cursor.classList.remove('hover');
-                
-                document.addEventListener('mousemove', moveCursor);
-                
-                const interactiveElements = document.querySelectorAll('a, button, .portfolio-item');
-                interactiveElements.forEach(el => {
-                    el.addEventListener('mouseenter', handleMouseEnter);
-                    el.addEventListener('mouseleave', handleMouseLeave);
-                });
-                
-                return () => {
-                    document.removeEventListener('mousemove', moveCursor);
-                };
-            }, []);
-            
-            if (window.matchMedia('(pointer: coarse)').matches) return null;
-            return <div className="cursor" ref={cursorRef} />;
+        // Фоновые анимированные формы
+        function BackgroundShapes() {
+            return (
+                <div className="bg-shapes">
+                    <div className="bg-shape bg-shape-1"></div>
+                    <div className="bg-shape bg-shape-2"></div>
+                    <div className="bg-shape bg-shape-3"></div>
+                </div>
+            );
         }
         
-        // Navigation Component
+        // Навигация
         function Navigation({ theme, toggleTheme }) {
             const [scrolled, setScrolled] = useState(false);
             
@@ -873,14 +1128,15 @@
                         <a href="#portfolio" className="nav-link">Портфолио</a>
                         <a href="#contact" className="nav-link">Контакты</a>
                         <button className="theme-btn" onClick={toggleTheme}>
-                            {theme === 'dark' ? '☀️' : '🌙'} {theme === 'dark' ? 'Светло' : 'Темно'}
+                            {theme === 'dark' ? '☀️' : '🌙'}
                         </button>
                     </div>
+                    <button className="mobile-menu-btn">☰</button>
                 </nav>
             );
         }
         
-        // Hero Component
+        // Hero с улучшенной типографикой
         function Hero() {
             return (
                 <section className="hero">
@@ -892,8 +1148,9 @@
                     </a>
                     <div className="hero-content">
                         <h1 className="hero-title">
-                            Графический дизайнер<br />
-                            <span>&</span> иллюстратор
+                            Графический<br />
+                            дизайнер <span className="ampersand">&</span><br />
+                            иллюстратор
                         </h1>
                         <p className="hero-subtitle">Наталья Сарычева</p>
                         <p className="hero-text">
@@ -901,23 +1158,22 @@
                             и эффективно решают бизнес-задачи. Специализируюсь на дизайне для маркетплейсов.
                         </p>
                         <a href="#portfolio" className="hero-cta">
-                            Смотреть работы →
+                            <span>Смотреть работы →</span>
                         </a>
                     </div>
                     <div className="scroll-hint">
-                        <span>Листайте вниз</span>
-                        <span>↓</span>
+                        <span>Листайте</span>
+                        <div className="scroll-line"></div>
                     </div>
                 </section>
             );
         }
         
-        // Portfolio Component
+        // Портфолио с masonry-раскладкой
         function Portfolio() {
             const [filter, setFilter] = useState('all');
             const [modalOpen, setModalOpen] = useState(false);
             const [currentIndex, setCurrentIndex] = useState(0);
-            const [visibleItems, setVisibleItems] = useState([]);
             const itemRefs = useRef([]);
             
             const filteredItems = filter === 'all' 
@@ -976,22 +1232,30 @@
                 return () => window.removeEventListener('keydown', handleKeyDown);
             }, [modalOpen, currentIndex]);
             
+            const filterLabels = {
+                all: 'Все работы',
+                avito: 'Avito',
+                aliexpress: 'AliExpress',
+                ozon: 'Ozon',
+                other: 'Другое'
+            };
+            
             return (
                 <>
                     <section id="portfolio" className="portfolio">
                         <div className="section-header">
                             <div className="section-label">Портфолио</div>
-                            <h2 className="section-title">Мои работы</h2>
+                            <h2 className="section-title">Избранные работы</h2>
                         </div>
                         
                         <div className="portfolio-filters">
-                            {['all', 'avito', 'aliexpress', 'ozon', 'other'].map(f => (
+                            {Object.keys(filterLabels).map(f => (
                                 <button 
                                     key={f}
                                     className={`filter-btn ${filter === f ? 'active' : ''}`}
                                     onClick={() => setFilter(f)}
                                 >
-                                    {f === 'all' ? 'Все' : f === 'avito' ? 'Avito' : f === 'aliexpress' ? 'AliExpress' : f === 'ozon' ? 'Ozon' : 'Другое'}
+                                    {filterLabels[f]}
                                 </button>
                             ))}
                         </div>
@@ -1001,18 +1265,18 @@
                                 <div 
                                     key={item.id}
                                     ref={el => itemRefs.current[index] = el}
-                                    className="portfolio-item"
+                                    className={`portfolio-item ${item.featured ? 'featured' : ''}`}
                                     onClick={() => openModal(index)}
                                     style={{ transitionDelay: `${index * 0.05}s` }}
                                 >
                                     <div className="portfolio-img-wrapper">
                                         <img src={item.img} alt={item.title} className="portfolio-img" loading="lazy" />
                                         <div className="portfolio-overlay">
-                                            <span className="portfolio-view-btn">Смотреть</span>
+                                            <span className="portfolio-view-btn">Смотреть проект</span>
                                         </div>
                                     </div>
                                     <div className="portfolio-info">
-                                        <div className="portfolio-category">{item.category === 'avito' ? 'Avito' : item.category === 'aliexpress' ? 'AliExpress' : item.category === 'ozon' ? 'Ozon' : 'Другое'}</div>
+                                        <div className="portfolio-category">{filterLabels[item.category]}</div>
                                         <h3 className="portfolio-title">{item.title}</h3>
                                         <p className="portfolio-desc">{item.desc}</p>
                                     </div>
@@ -1040,13 +1304,13 @@
             );
         }
         
-        // About Component
+        // Обо мне с украшенной типографикой
         function About() {
             return (
                 <section id="about">
                     <div className="section-header">
                         <div className="section-label">Обо мне</div>
-                        <h2 className="section-title">Давайте познакомимся</h2>
+                        <h2 className="section-title">Давайте познакомимся поближе</h2>
                     </div>
                     
                     <div className="about-content">
@@ -1092,7 +1356,7 @@
             );
         }
         
-        // Contact Component
+        // Контакты
         function Contact() {
             const contacts = [
                 { icon: '✉️', title: 'Email', value: 'sarychevanatasha22@gmail.com', link: 'mailto:sarychevanatasha22@gmail.com' },
@@ -1107,7 +1371,7 @@
                 <section id="contact" className="contact">
                     <div className="section-header">
                         <div className="section-label">Контакты</div>
-                        <h2 className="section-title">Давайте работать вместе</h2>
+                        <h2 className="section-title">Давайте создадим что-то прекрасное</h2>
                     </div>
                     
                     <div className="contact-grid">
@@ -1131,18 +1395,18 @@
             );
         }
         
-        // Footer Component
+        // Футер
         function Footer() {
             return (
                 <footer>
                     <p className="footer-text">
-                        © 2026 <span>Наталья Сарычева</span>. Графический дизайнер и иллюстратор.
+                        © 2026 <span>Наталья Сарычева</span> — Графический дизайнер и иллюстратор
                     </p>
                 </footer>
             );
         }
         
-        // Main App
+        // Главное приложение
         function App() {
             const [theme, setTheme] = useState(() => {
                 return localStorage.getItem('theme') || 'dark';
@@ -1159,8 +1423,8 @@
             
             return (
                 <>
-                    <CustomCursor />
                     <div className="noise"></div>
+                    <BackgroundShapes />
                     <Navigation theme={theme} toggleTheme={toggleTheme} />
                     <Hero />
                     <Portfolio />
