@@ -1047,6 +1047,10 @@
             transition: transform 0.4s ease;
             touch-action: none;
             user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         .modal-overlay.active .modal-content {
@@ -1054,8 +1058,11 @@
         }
         
         .modal-image {
-            max-width: 100%;
+            max-width: 90vw;
             max-height: 85vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
             border-radius: 16px;
             box-shadow: 0 40px 80px rgba(0,0,0,0.6);
             touch-action: none;
@@ -1215,9 +1222,13 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
             }
             .modal-image {
+                max-width: 95vw;
                 max-height: 70vh;
+                width: auto;
+                height: auto;
             }
         }
         
@@ -1243,11 +1254,16 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 touch-action: pan-y pinch-zoom;
             }
             
             .modal-image {
+                max-width: 95vw;
                 max-height: 70vh;
+                width: auto;
+                height: auto;
+                object-fit: contain;
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
                 will-change: transform, opacity;
             }
@@ -1355,7 +1371,6 @@
             }
         }
     </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -1975,8 +1990,6 @@
                                         userSelect: 'none',
                                         touchAction: 'none'
                                     }}
-                                    width="1200"
-                                    height="900"
                                 />
                                 <div className="modal-counter">{currentIndex + 1} / {filteredItems.length}</div>
                                 <div className="swipe-hint">Свайпайте</div>
