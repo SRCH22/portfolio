@@ -12,7 +12,6 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         :root {
-            /* Новая изысканная палитра */
             --bg: #0c0c0e;
             --bg-secondary: #121214;
             --bg-card: #18181b;
@@ -20,6 +19,7 @@
             --text: #fafaf9;
             --text-secondary: #a1a1aa;
             --text-muted: #52525b;
+            --text-footer-muted: #71717a;
             --accent: #f59e0b;
             --accent-secondary: #ec4899;
             --accent-tertiary: #06b6d4;
@@ -36,6 +36,7 @@
             --text: #1c1917;
             --text-secondary: #57534e;
             --text-muted: #a8a29e;
+            --text-footer-muted: #78716c;
             --accent: #d97706;
             --accent-secondary: #db2777;
             --accent-tertiary: #0891b2;
@@ -63,7 +64,6 @@
             transition: background 0.5s ease, color 0.5s ease;
         }
         
-        /* Элегантный шум с меньшей интенсивностью */
         .noise {
             position: fixed;
             top: 0;
@@ -76,7 +76,6 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
         
-        /* Органические фоновые формы */
         .bg-shapes {
             position: fixed;
             inset: 0;
@@ -126,7 +125,6 @@
             66% { transform: translate(-20px, 20px) scale(0.9); }
         }
         
-        /* Навигация с эффектом стекла */
         nav {
             position: fixed;
             top: 0;
@@ -192,6 +190,7 @@
             transition: color 0.3s ease;
             position: relative;
             letter-spacing: 0.02em;
+            cursor: pointer;
         }
         
         .nav-link:hover {
@@ -244,24 +243,78 @@
             color: var(--text);
             font-size: 1.5rem;
             cursor: pointer;
+            z-index: 102;
         }
         
-        /* Hero с асимметричной композицией */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: var(--bg-card);
+            border-left: 1px solid var(--border);
+            z-index: 101;
+            padding: 100px 40px 40px;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .mobile-menu.open {
+            right: 0;
+        }
+        
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-nav-link {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .mobile-nav-link:hover {
+            color: var(--accent);
+        }
+        
         .hero {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             padding: 140px 48px 100px;
             position: relative;
             z-index: 1;
+            text-align: center;
         }
         
         .hero-badge-link {
             text-decoration: none;
             display: inline-flex;
             margin-bottom: 40px;
-            align-self: flex-start;
+            align-self: center;
         }
         
         .hero-badge {
@@ -319,7 +372,9 @@
         
         .hero-content {
             max-width: 1000px;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .hero-title {
@@ -373,6 +428,8 @@
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            margin-bottom: 60px;
         }
         
         .hero-cta::before {
@@ -405,16 +462,16 @@
         }
         
         .scroll-hint {
-            position: absolute;
-            bottom: 40px;
-            left: 48px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 8px;
             color: var(--text-muted);
             font-size: 0.75rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
+            position: static;
+            margin-top: 0;
         }
         
         .scroll-line {
@@ -431,7 +488,6 @@
             100% { transform: scaleY(0); transform-origin: bottom; }
         }
         
-        /* Секции с улучшенной типографикой */
         section {
             padding: 120px 48px;
             position: relative;
@@ -473,7 +529,6 @@
             line-height: 1.2;
         }
         
-        /* Портфолио с masonry-эффектом */
         .portfolio {
             background: var(--bg-secondary);
             position: relative;
@@ -628,7 +683,6 @@
             line-height: 1.6;
         }
         
-        /* Обо мне с асимметрией */
         .about-content {
             display: grid;
             grid-template-columns: 1.2fr 0.8fr;
@@ -752,7 +806,6 @@
             transform: scale(1.02);
         }
         
-        /* Контакты с карточками-стеклами */
         .contact {
             background: var(--bg-secondary);
             position: relative;
@@ -852,7 +905,6 @@
             line-height: 1.6;
         }
         
-        /* Футер минималистичный */
         footer {
             padding: 80px 48px;
             text-align: center;
@@ -862,18 +914,21 @@
         
         .footer-text {
             font-size: 0.9rem;
-            color: var(--text-muted);
+            color: var(--text-footer-muted);
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
         }
         
-        .footer-text span {
+        .footer-text .highlight {
             color: var(--text);
             font-weight: 600;
             font-style: normal;
         }
         
-        /* Модальное окно улучшенное */
+        .footer-text .year {
+            color: var(--text-secondary);
+        }
+        
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -929,6 +984,7 @@
             justify-content: center;
             border-radius: 50%;
             transition: all 0.3s ease;
+            z-index: 10;
         }
         
         .modal-close:hover {
@@ -975,7 +1031,22 @@
             font-style: italic;
         }
         
-        /* Адаптивность */
+        .swipe-hint {
+            display: none;
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            animation: swipeHint 2s infinite;
+        }
+        
+        @keyframes swipeHint {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) translateX(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateX(10px); }
+        }
+        
         @media (max-width: 1200px) {
             .portfolio-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -1036,14 +1107,26 @@
             .stat-item:not(:last-child)::after {
                 display: none;
             }
-            .modal-nav.prev { left: 20px; }
-            .modal-nav.next { right: 20px; }
             .bg-shape {
                 opacity: 0.2;
             }
+            .modal-nav {
+                display: none;
+            }
+            .swipe-hint {
+                display: block;
+            }
+            .modal-content {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .modal-image {
+                max-height: 70vh;
+            }
         }
         
-        /* Анимации */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -1058,22 +1141,15 @@
         .animate-in {
             animation: fadeInUp 0.8s ease forwards;
         }
-        
-        /* Кастомный курсор только для десктопа */
-        @media (pointer: fine) {
-            .cursor {
-                display: none;
-            }
-        }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect, useRef, useCallback } = React;
         
-        // Данные портфолио с featured-элементами
         const portfolioData = [
             { id: 1, category: 'avito', title: 'Превью на Avito', desc: 'Креативные обложки для объявлений', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio4.jpg', featured: true },
             { id: 2, category: 'avito', title: 'Превью на Avito', desc: 'Привлекательные превью-изображения', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio5.jpg' },
@@ -1099,7 +1175,50 @@
             { id: 22, category: 'other', title: 'Типографика', desc: 'Инструкции и мануалы', img: 'https://raw.githubusercontent.com/SRCH22/portfolio/main/portfolio/portfolio22.jpg' },
         ];
         
-        // Фоновые анимированные формы
+        const ContactIcons = {
+            email: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            ),
+            phone: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+            ),
+            telegram: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+            ),
+            vk: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4 8.673 4 8.231c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.814-.542 1.27-1.422 2.176-3.61 2.176-3.61.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/>
+                </svg>
+            ),
+            clock: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            ),
+            location: (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+            )
+        };
+        
+        // Функция для плавной прокрутки к секции
+        const scrollToSection = (sectionId) => {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+        
         function BackgroundShapes() {
             return (
                 <div className="bg-shapes">
@@ -1110,9 +1229,9 @@
             );
         }
         
-        // Навигация
         function Navigation({ theme, toggleTheme }) {
             const [scrolled, setScrolled] = useState(false);
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
             
             useEffect(() => {
                 const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -1120,27 +1239,40 @@
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
             
+            const closeMobileMenu = () => setMobileMenuOpen(false);
+            
             return (
-                <nav className={scrolled ? 'scrolled' : ''}>
-                    <a href="#" className="nav-logo">Наталья С.</a>
-                    <div className="nav-links">
-                        <a href="#about" className="nav-link">Обо мне</a>
-                        <a href="#portfolio" className="nav-link">Портфолио</a>
-                        <a href="#contact" className="nav-link">Контакты</a>
-                        <button className="theme-btn" onClick={toggleTheme}>
-                            {theme === 'dark' ? '☀️' : '🌙'}
+                <>
+                    <nav className={scrolled ? 'scrolled' : ''}>
+                        <a href="#" className="nav-logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Наталья С.</a>
+                        <div className="nav-links">
+                            <span className="nav-link" onClick={() => scrollToSection('about')}>Обо мне</span>
+                            <span className="nav-link" onClick={() => scrollToSection('portfolio')}>Работы</span>
+                            <span className="nav-link" onClick={() => scrollToSection('contact')}>Контакты</span>
+                            <button className="theme-btn" onClick={toggleTheme}>
+                                {theme === 'dark' ? '☀️' : '🌙'}
+                            </button>
+                        </div>
+                        <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(true)}>☰</button>
+                    </nav>
+                    
+                    <div className={`mobile-menu-overlay ${mobileMenuOpen ? 'open' : ''}`} onClick={closeMobileMenu}></div>
+                    <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
+                        <span className="mobile-nav-link" onClick={() => { scrollToSection('about'); closeMobileMenu(); }}>Обо мне</span>
+                        <span className="mobile-nav-link" onClick={() => { scrollToSection('portfolio'); closeMobileMenu(); }}>Работы</span>
+                        <span className="mobile-nav-link" onClick={() => { scrollToSection('contact'); closeMobileMenu(); }}>Контакты</span>
+                        <button className="theme-btn" onClick={toggleTheme} style={{marginTop: '20px'}}>
+                            {theme === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема'}
                         </button>
                     </div>
-                    <button className="mobile-menu-btn">☰</button>
-                </nav>
+                </>
             );
         }
         
-        // Hero с улучшенной типографикой
         function Hero() {
             return (
                 <section className="hero">
-                    <a href="#contact" className="hero-badge-link">
+                    <a href="#contact" className="hero-badge-link" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>
                         <div className="hero-badge">
                             <span className="hero-badge-dot"></span>
                             Открыта для новых проектов
@@ -1157,23 +1289,24 @@
                             Создаю визуальные решения, которые вдохновляют, привлекают внимание 
                             и эффективно решают бизнес-задачи. Специализируюсь на дизайне для маркетплейсов.
                         </p>
-                        <a href="#portfolio" className="hero-cta">
+                        <button className="hero-cta" onClick={() => scrollToSection('portfolio')}>
                             <span>Смотреть работы →</span>
-                        </a>
-                    </div>
-                    <div className="scroll-hint">
-                        <span>Листайте</span>
-                        <div className="scroll-line"></div>
+                        </button>
+                        <div className="scroll-hint">
+                            <span>Листайте</span>
+                            <div className="scroll-line"></div>
+                        </div>
                     </div>
                 </section>
             );
         }
         
-        // Портфолио с masonry-раскладкой
         function Portfolio() {
             const [filter, setFilter] = useState('all');
             const [modalOpen, setModalOpen] = useState(false);
             const [currentIndex, setCurrentIndex] = useState(0);
+            const [touchStart, setTouchStart] = useState(null);
+            const [touchEnd, setTouchEnd] = useState(null);
             const itemRefs = useRef([]);
             
             const filteredItems = filter === 'all' 
@@ -1210,7 +1343,7 @@
                 document.body.style.overflow = 'auto';
             };
             
-            const navigateModal = (direction) => {
+            const navigateModal = useCallback((direction) => {
                 const newIndex = currentIndex + direction;
                 if (newIndex >= 0 && newIndex < filteredItems.length) {
                     setCurrentIndex(newIndex);
@@ -1218,6 +1351,29 @@
                     setCurrentIndex(filteredItems.length - 1);
                 } else {
                     setCurrentIndex(0);
+                }
+            }, [currentIndex, filteredItems.length]);
+            
+            const onTouchStart = (e) => {
+                setTouchEnd(null);
+                setTouchStart(e.targetTouches[0].clientX);
+            };
+            
+            const onTouchMove = (e) => {
+                setTouchEnd(e.targetTouches[0].clientX);
+            };
+            
+            const onTouchEnd = () => {
+                if (!touchStart || !touchEnd) return;
+                const distance = touchStart - touchEnd;
+                const isLeftSwipe = distance > 50;
+                const isRightSwipe = distance < -50;
+                
+                if (isLeftSwipe) {
+                    navigateModal(1);
+                }
+                if (isRightSwipe) {
+                    navigateModal(-1);
                 }
             };
             
@@ -1230,7 +1386,7 @@
                 };
                 window.addEventListener('keydown', handleKeyDown);
                 return () => window.removeEventListener('keydown', handleKeyDown);
-            }, [modalOpen, currentIndex]);
+            }, [modalOpen, navigateModal]);
             
             const filterLabels = {
                 all: 'Все работы',
@@ -1287,7 +1443,13 @@
                     
                     {modalOpen && (
                         <div className="modal-overlay active" onClick={closeModal}>
-                            <div className="modal-content" onClick={e => e.stopPropagation()}>
+                            <div 
+                                className="modal-content" 
+                                onClick={e => e.stopPropagation()}
+                                onTouchStart={onTouchStart}
+                                onTouchMove={onTouchMove}
+                                onTouchEnd={onTouchEnd}
+                            >
                                 <button className="modal-close" onClick={closeModal}>×</button>
                                 <button className="modal-nav prev" onClick={() => navigateModal(-1)}>‹</button>
                                 <button className="modal-nav next" onClick={() => navigateModal(1)}>›</button>
@@ -1295,8 +1457,10 @@
                                     src={filteredItems[currentIndex].img} 
                                     alt={filteredItems[currentIndex].title}
                                     className="modal-image"
+                                    draggable="false"
                                 />
                                 <div className="modal-counter">{currentIndex + 1} / {filteredItems.length}</div>
+                                <div className="swipe-hint">← Свайпайте →</div>
                             </div>
                         </div>
                     )}
@@ -1304,7 +1468,6 @@
             );
         }
         
-        // Обо мне с украшенной типографикой
         function About() {
             return (
                 <section id="about">
@@ -1356,15 +1519,14 @@
             );
         }
         
-        // Контакты
         function Contact() {
             const contacts = [
-                { icon: '✉️', title: 'Email', value: 'sarychevanatasha22@gmail.com', link: 'mailto:sarychevanatasha22@gmail.com' },
-                { icon: '📱', title: 'Телефон', value: '8 953 730 87 54', link: 'tel:89537308754' },
-                { icon: '✈️', title: 'Telegram', value: '@Arycheva', link: 'https://t.me/Arycheva' },
-                { icon: '💬', title: 'ВКонтакте', value: 'vk.com/kokkidi', link: 'https://vk.com/kokkidi' },
-                { icon: '🕐', title: 'Часы работы', value: 'Пн-Пт: 9:00 - 18:00\nСб-Вс: по договоренности', link: null },
-                { icon: '📍', title: 'Локация', value: 'Рязань, Россия', link: null },
+                { icon: 'email', title: 'Email', value: 'sarychevanatasha22@gmail.com', link: 'mailto:sarychevanatasha22@gmail.com' },
+                { icon: 'phone', title: 'Телефон', value: '8 953 730 87 54', link: 'tel:89537308754' },
+                { icon: 'telegram', title: 'Telegram', value: '@Arycheva', link: 'https://t.me/Arycheva' },
+                { icon: 'vk', title: 'ВКонтакте', value: 'vk.com/kokkidi', link: 'https://vk.com/kokkidi' },
+                { icon: 'clock', title: 'Часы работы', value: 'Пн-Пт: 9:00 - 18:00\nСб-Вс: по договоренности', link: null },
+                { icon: 'location', title: 'Локация', value: 'Рязань, Россия', link: null },
             ];
             
             return (
@@ -1378,13 +1540,13 @@
                         {contacts.map((contact, index) => (
                             contact.link ? (
                                 <a key={index} href={contact.link} className="contact-card" target={contact.link.startsWith('http') ? '_blank' : undefined} rel={contact.link.startsWith('http') ? 'noopener noreferrer' : undefined}>
-                                    <div className="contact-icon">{contact.icon}</div>
+                                    <div className="contact-icon">{ContactIcons[contact.icon]}</div>
                                     <div className="contact-title">{contact.title}</div>
                                     <div className="contact-value" style={{ whiteSpace: 'pre-line' }}>{contact.value}</div>
                                 </a>
                             ) : (
                                 <div key={index} className="contact-card no-link">
-                                    <div className="contact-icon">{contact.icon}</div>
+                                    <div className="contact-icon">{ContactIcons[contact.icon]}</div>
                                     <div className="contact-title">{contact.title}</div>
                                     <div className="contact-value" style={{ whiteSpace: 'pre-line' }}>{contact.value}</div>
                                 </div>
@@ -1395,18 +1557,16 @@
             );
         }
         
-        // Футер
         function Footer() {
             return (
                 <footer>
                     <p className="footer-text">
-                        © 2026 <span>Наталья Сарычева</span> — Графический дизайнер и иллюстратор
+                        <span className="year">© 2026</span> <span className="highlight">Наталья Сарычева</span> <span className="year">— Графический дизайнер и иллюстратор</span>
                     </p>
                 </footer>
             );
         }
         
-        // Главное приложение
         function App() {
             const [theme, setTheme] = useState(() => {
                 return localStorage.getItem('theme') || 'dark';
